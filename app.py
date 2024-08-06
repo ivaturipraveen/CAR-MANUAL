@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains import LLMChain
@@ -9,6 +10,7 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for the entire app
 
 # Load environment variables from .env file
 load_dotenv()
@@ -70,8 +72,7 @@ def ask():
     response = {'answer': result}
     
     if relevant_images:
-        # Include only the first image in the response for simplicity
-        response['image'] = relevant_images[0]
+        response['images'] = relevant_images
     
     return jsonify(response)
 
